@@ -4,7 +4,7 @@
 
 window.require=function(name) { throw "Dummy require function!!" };
 
-import { ActorSheetFFd20NPC } from "../../systems/FFD20/ffd20.js";
+import { ActorSheetFFD20NPC } from "../../systems/FFD20/ffd20.js";
 import { LootSheetActions } from "./scripts/actions.js";
 
 class QuantityDialog extends Dialog {
@@ -53,7 +53,7 @@ class QuantityDialog extends Dialog {
   }
 }
 
-class LootSheetFFd20NPC extends ActorSheetFFd20NPC {
+class LootSheetFFd20NPC extends ActorSheetFFD20NPC {
 
   static MODULENAME = "lootsheetnpcffd20"
   static SOCKET = "module.lootsheetnpcffd20";
