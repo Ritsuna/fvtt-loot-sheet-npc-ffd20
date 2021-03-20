@@ -2,7 +2,7 @@
 
 This module adds an additional NPC sheet which can be used for loot containers such as chests. It also allows spells to be automatically converted into spell scrolls by dragging them onto this sheet. 
 
-This version was forked from Jan Ole Peek's module which doesn't support pf1 system (https://github.com/jopeek/fvtt-loot-sheet-npc-5e). 
+This version was forked from Jan Ole Peek's module which doesn't support ffd20 system (https://github.com/jopeek/fvtt-loot-sheet-npc-5e). 
 This fork will be maintained separately and specifically for Pathfinder 1 (may support PF2 in the future)
 
 <p style="color:red">Development in progress ...</p>
@@ -18,7 +18,7 @@ More features detailed below.
 ##### Loot Sheet
 
 * Prepare a loot by dragging items from compendiums
-* Alternatively, you can convert a dead PNJ into a loot by changing the sheet to `PF1.LootSheetPF1NPC`
+* Alternatively, you can convert a dead PNJ into a loot by changing the sheet to `FFD20.LootSheetFFD20NPC`
 
 ![Demo Loot Sheet](doc/img/add-items-loot.gif)
 
@@ -79,7 +79,7 @@ More features detailed below.
 To install a module, follow these instructions:
 
 1. Start FVTT and browse to the Game Modules tab in the Configuration and Setup menu
-2. Select the Install Module button and enter the following URL: https://raw.githubusercontent.com/SvenWerlen/fvtt-loot-sheet-npc-pf1/master/module.json
+2. Select the Install Module button and enter the following URL: https://raw.githubusercontent.com/SvenWerlen/fvtt-loot-sheet-npc-ffd20/master/module.json
 3. Click Install and wait for installation to complete 
 
 ### Feedback

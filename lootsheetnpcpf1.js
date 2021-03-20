@@ -1,10 +1,10 @@
 /**
- * Adapted for PF1 system from original module: https://github.com/jopeek/fvtt-loot-sheet-npc-5e
+ * Adapted for FFd20 system from original module: https://github.com/jopeek/fvtt-loot-sheet-npc-5e
  */ 
 
 window.require=function(name) { throw "Dummy require function!!" };
 
-import { ActorSheetPFNPC } from "../../systems/pf1/pf1.js";
+import { ActorSheetPFNPC } from "../../systems/FFD20/ffd20.js";
 import { LootSheetActions } from "./scripts/actions.js";
 
 class QuantityDialog extends Dialog {
@@ -53,10 +53,10 @@ class QuantityDialog extends Dialog {
   }
 }
 
-class LootSheetPf1NPC extends ActorSheetPFNPC {
+class LootSheetFfd20NPC extends ActorSheetPFNPC {
 
-  static MODULENAME = "lootsheetnpcpf1"
-  static SOCKET = "module.lootsheetnpcpf1";
+  static MODULENAME = "lootsheetnpcffd20"
+  static SOCKET = "module.lootsheetnpcffd20";
 
   get template() {
     // adding the #equals and #unequals handlebars helper
@@ -81,15 +81,15 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
       return quantity > 1 ? `(${quantity}) ${name}` : name;
     });
 
-    const path = "systems/pf1/templates/actors/";
-    return "modules/lootsheetnpcpf1/template/npc-sheet.html";
+    const path = "systems/ffd20/templates/actors/";
+    return "modules/lootsheetnpcffd20/template/npc-sheet.html";
   }
 
   static get defaultOptions() {
     const options = super.defaultOptions;
 
     mergeObject(options, {
-      classes: ["pf1 sheet actor npc npc-sheet loot-sheet-npc"],
+      classes: ["ffd20 sheet actor npc npc-sheet loot-sheet-npc"],
       width: 850,
       height: 750
     });
@@ -131,29 +131,29 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
     //console.log("sheetData.isGM: ", sheetData.isGM);
     //console.log(this.actor);
 
-    let lootsheettype = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "lootsheettype");
+    let lootsheettype = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "lootsheettype");
     if (!lootsheettype) {
       lootsheettype = "Loot"
-      await this.actor.setFlag(LootSheetPf1NPC.MODULENAME, "lootsheettype", lootsheettype);
+      await this.actor.setFlag(LootSheetFfd20NPC.MODULENAME, "lootsheettype", lootsheettype);
     }
     //console.log(`Loot Sheet | Loot sheet type = ${lootsheettype}`);
 
-    let rolltable = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "rolltable");
+    let rolltable = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "rolltable");
     //console.log(`Loot Sheet | Rolltable = ${rolltable}`);
 
     
     let priceModifier = 1.0;
     if (lootsheettype === "Merchant") {
-      priceModifier = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "priceModifier");
-      if (!priceModifier) await this.actor.setFlag(LootSheetPf1NPC.MODULENAME, "priceModifier", 1.0);
-      priceModifier = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "priceModifier");
+      priceModifier = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "priceModifier");
+      if (!priceModifier) await this.actor.setFlag(LootSheetFfd20NPC.MODULENAME, "priceModifier", 1.0);
+      priceModifier = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "priceModifier");
     }
     
     let totalItems = 0
     let totalWeight = 0
     let totalPrice = 0
-    let maxCapacity = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "maxCapacity") || 0;
-    let maxLoad = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "maxLoad") || 0;
+    let maxCapacity = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "maxCapacity") || 0;
+    let maxLoad = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "maxLoad") || 0;
     
     Object.keys(sheetData.actor.features).forEach( f => sheetData.actor.features[f].items.forEach( i => {  
       // specify if empty
@@ -178,7 +178,7 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
     sheetData.maxWeight = maxLoad > 0 ? " / " + maxLoad : ""
     sheetData.weightWarning = maxLoad <= 0 || maxLoad >= totalWeight ? "" : "warn"
     sheetData.totalPrice = totalPrice
-    sheetData.weightUnit = game.settings.get("pf1", "units") == "metric" ? game.i18n.localize("PF1.Kgs") : game.i18n.localize("PF1.Lbs")
+    sheetData.weightUnit = game.settings.get("ffd20", "units") == "metric" ? game.i18n.localize("FFD20.Kgs") : game.i18n.localize("FFD20.Lbs")
     
     // Return data for rendering
     return sheetData;
@@ -196,7 +196,7 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
     //console.log("Loot Sheet | activateListeners")
     super.activateListeners(html);
     
-    const dragEnabled = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "dragEnabled");
+    const dragEnabled = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "dragEnabled");
     if(!dragEnabled) {    
       // Remove dragging capability
       let handler = ev => this._onDragItemStart(ev);
@@ -264,9 +264,9 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
     }
 
     if (event.target.value) {
-      await this.actor.setFlag(LootSheetPf1NPC.MODULENAME, targetKey, event.target.value);
+      await this.actor.setFlag(LootSheetFfd20NPC.MODULENAME, targetKey, event.target.value);
     } else {
-      await this.actor.unsetFlag(LootSheetPf1NPC.MODULENAME, targetKey, event.target.value);
+      await this.actor.unsetFlag(LootSheetFfd20NPC.MODULENAME, targetKey, event.target.value);
     }
   }
   
@@ -303,9 +303,9 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
     }
     
     console.log(this.actor)
-    const rolltableName = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "rolltable");
-    const shopQtyFormula = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "shopQty") || "1";
-    const itemQtyFormula = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "itemQty") || "1";
+    const rolltableName = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "rolltable");
+    const shopQtyFormula = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "shopQty") || "1";
+    const itemQtyFormula = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "itemQty") || "1";
     console.log(itemQtyFormula)
 
     if (!rolltableName || rolltableName.length == 0) {
@@ -318,7 +318,7 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
       return ui.notifications.error(game.i18n.format("ERROR.lsNoRollableTableFound", {name: rolltableName}));
     }
 
-    let clearInventory = game.settings.get(LootSheetPf1NPC.MODULENAME, "clearInventory");
+    let clearInventory = game.settings.get(LootSheetFfd20NPC.MODULENAME, "clearInventory");
 
     if (clearInventory) {
 
@@ -371,7 +371,7 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
 
     game.packs.map(p => p.collection);
 
-    const pack = game.packs.find(p => p.collection === "pf1.items");
+    const pack = game.packs.find(p => p.collection === "ffd20.items");
 
     let i = 0;
 
@@ -461,8 +461,8 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
           quantity: quantity,
           processorId: targetGm.id
         };
-        console.log("LootSheetPf1", "Sending buy request to " + targetGm.name, packet);
-        game.socket.emit(LootSheetPf1NPC.SOCKET, packet);
+        console.log("LootSheetFfd20", "Sending buy request to " + targetGm.name, packet);
+        game.socket.emit(LootSheetFfd20NPC.SOCKET, packet);
       }, options);
       d.render(true);
     } else {
@@ -517,8 +517,8 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
           quantity: quantity,
           processorId: targetGm.id
         };
-        console.log("LootSheetPf1", "Sending loot request to " + targetGm.name, packet);
-        game.socket.emit(LootSheetPf1NPC.SOCKET, packet);
+        console.log("LootSheetFfd20", "Sending loot request to " + targetGm.name, packet);
+        game.socket.emit(LootSheetFfd20NPC.SOCKET, packet);
       }, options);
       d.render(true);
     } else {
@@ -537,12 +537,12 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
     event.preventDefault();
     //console.log("Loot Sheet | _priceModifier")
 
-    let priceModifier = await this.actor.getFlag(LootSheetPf1NPC.MODULENAME, "priceModifier");
+    let priceModifier = await this.actor.getFlag(LootSheetFfd20NPC.MODULENAME, "priceModifier");
     if (!priceModifier) priceModifier = 1.0;
 
     priceModifier = Math.round(priceModifier * 100);
 
-    renderTemplate("modules/lootsheetnpcpf1/template/dialog-price-modifier.html", {'priceModifier': priceModifier}).then(html => {
+    renderTemplate("modules/lootsheetnpcffd20/template/dialog-price-modifier.html", {'priceModifier': priceModifier}).then(html => {
       new Dialog({
         title: game.i18n.localize("ls.priceModifierTitle"),
         content: html,
@@ -550,7 +550,7 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
           one: {
             icon: '<i class="fas fa-check"></i>',
             label: game.i18n.localize("ls.update"),
-            callback: () => this.actor.setFlag(LootSheetPf1NPC.MODULENAME, "priceModifier", document.getElementById("price-modifier-percent").value / 100)
+            callback: () => this.actor.setFlag(LootSheetFfd20NPC.MODULENAME, "priceModifier", document.getElementById("price-modifier-percent").value / 100)
           },
           two: {
             icon: '<i class="fas fa-times"></i>',
@@ -577,10 +577,10 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
     let item = this.actor.getOwnedItem(itemId);
     if(item) {
       console.log(item)
-      if(!item.getFlag(LootSheetPf1NPC.MODULENAME, "secret")) {
-        item.setFlag(LootSheetPf1NPC.MODULENAME, "secret", true);
+      if(!item.getFlag(LootSheetFfd20NPC.MODULENAME, "secret")) {
+        item.setFlag(LootSheetFfd20NPC.MODULENAME, "secret", true);
       } else {
-        item.unsetFlag(LootSheetPf1NPC.MODULENAME, "secret");
+        item.unsetFlag(LootSheetFfd20NPC.MODULENAME, "secret");
       }
     }
   }
@@ -597,10 +597,10 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
     let item = this.actor.getOwnedItem(itemId);
     if(item) {
       console.log(item)
-      if(!item.getFlag(LootSheetPf1NPC.MODULENAME, "infinite")) {
-        item.setFlag(LootSheetPf1NPC.MODULENAME, "infinite", true);
+      if(!item.getFlag(LootSheetFfd20NPC.MODULENAME, "infinite")) {
+        item.setFlag(LootSheetFfd20NPC.MODULENAME, "infinite", true);
       } else {
-        item.unsetFlag(LootSheetPf1NPC.MODULENAME, "infinite");
+        item.unsetFlag(LootSheetFfd20NPC.MODULENAME, "infinite");
       }
     }
   }
@@ -838,11 +838,11 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
       i.showPrice = this.getLootPrice(i)
       i.showName = this.getLootName(i)
       
-      if (!game.user.isGM && i.flags.lootsheetnpcpf1 && i.flags.lootsheetnpcpf1.secret) {
+      if (!game.user.isGM && i.flags.lootsheetnpcffd20 && i.flags.lootsheetnpcffd20.secret) {
         continue;
       }
       
-      if (i.flags.lootsheetnpcpf1 && i.flags.lootsheetnpcpf1.infinite) {
+      if (i.flags.lootsheetnpcffd20 && i.flags.lootsheetnpcffd20.infinite) {
         i.data.quantity = 1
       }
       
@@ -1031,7 +1031,7 @@ class LootSheetPf1NPC extends ActorSheetPFNPC {
           targetActorId: this.token ? undefined : this.actor.id,
           processorId: targetGm.id
         };
-        game.socket.emit(LootSheetPf1NPC.SOCKET, packet);
+        game.socket.emit(LootSheetFfd20NPC.SOCKET, packet);
       }
     }
   }
@@ -1046,8 +1046,8 @@ Hooks.on('preCreateOwnedItem', (actor, item, data) => {
 
   if (!actor) throw new Error(`Parent Actor ${actor._id} not found`);
   
-  // If the target actor is using the LootSheetPf1NPC then check in the item
-  if (actor.sheet instanceof LootSheetPf1NPC) {
+  // If the target actor is using the LootSheetFfd20NPC then check in the item
+  if (actor.sheet instanceof LootSheetFfd20NPC) {
     // validate the type of item to be "moved" or "added"
     if(!["weapon","equipment","consumable","loot","container"].includes(item.type)) {
       ui.notifications.error(game.i18n.localize("ERROR.lsInvalidType"));
@@ -1133,7 +1133,7 @@ Hooks.on('renderActorDirectory', (app, html, data) => {
           quantity: quantity
         };
         console.log(`Loot Sheet | Sending packet to ${actorDestId}`)
-        game.socket.emit(LootSheetPf1NPC.SOCKET, packet);
+        game.socket.emit(LootSheetFfd20NPC.SOCKET, packet);
       }
     }, options);
     d.render(true);
@@ -1149,8 +1149,8 @@ Hooks.on('renderActorDirectory', (app, html, data) => {
 Hooks.once("init", () => {
 
   loadTemplates([
-    "modules/lootsheetnpcpf1/template/npc-sheet-gmpart.html", 
-    "modules/lootsheetnpcpf1/template/dialog-price-modifier.html"]);
+    "modules/lootsheetnpcffd20/template/npc-sheet-gmpart.html", 
+    "modules/lootsheetnpcffd20/template/dialog-price-modifier.html"]);
   
   Handlebars.registerHelper('ifeq', function(a, b, options) {
     if (a == b) {
@@ -1159,7 +1159,7 @@ Hooks.once("init", () => {
     return options.inverse(this);
   });
 
-  game.settings.register(LootSheetPf1NPC.MODULENAME, "changeScrollIcon", {
+  game.settings.register(LootSheetFfd20NPC.MODULENAME, "changeScrollIcon", {
     name: game.i18n.localize("SETTINGS.lsChangeIconForSpellScrollsTitle"), 
     hint: game.i18n.localize("SETTINGS.lsChangeIconForSpellScrollsHint"), 
     scope: "world",
@@ -1168,7 +1168,7 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  game.settings.register(LootSheetPf1NPC.MODULENAME, "buyChat", {
+  game.settings.register(LootSheetFfd20NPC.MODULENAME, "buyChat", {
     name: game.i18n.localize("SETTINGS.lsPurchaseChatMessageTitle"),
     hint: game.i18n.localize("SETTINGS.lsPurchaseChatMessageHint"),
     scope: "world",
@@ -1177,7 +1177,7 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  game.settings.register(LootSheetPf1NPC.MODULENAME, "clearInventory", {
+  game.settings.register(LootSheetFfd20NPC.MODULENAME, "clearInventory", {
     name: game.i18n.localize("SETTINGS.lsClearInventoryTitle"),
     hint: game.i18n.localize("SETTINGS.lsClearInventoryHint"),
     scope: "world",
@@ -1186,7 +1186,7 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  game.settings.register(LootSheetPf1NPC.MODULENAME, "removeEmptyStacks", {
+  game.settings.register(LootSheetFfd20NPC.MODULENAME, "removeEmptyStacks", {
     name: game.i18n.localize("SETTINGS.lsRemoveEmptyStackTitle"),
     hint: game.i18n.localize("SETTINGS.lsRemoveEmptyStackHint"),
     scope: "world",
@@ -1198,7 +1198,7 @@ Hooks.once("init", () => {
   /*******************************************
    *          SOCKET HANDLING!
    *******************************************/
-  game.socket.on(LootSheetPf1NPC.SOCKET, data => {
+  game.socket.on(LootSheetFfd20NPC.SOCKET, data => {
     console.log("Loot Sheet | Socket Message: ", data);
     if (game.user.isGM && data.processorId === game.user.id) {
       let user = game.users.get(data.userId);
@@ -1240,7 +1240,7 @@ Hooks.once("init", () => {
   });
 
   //Register the loot sheet
-  Actors.registerSheet("PF1", LootSheetPf1NPC, {
+  Actors.registerSheet("FFD20", LootSheetFfd20NPC, {
     types: ["npc"],
     makeDefault: false
   });
@@ -1255,7 +1255,7 @@ Hooks.on("getActorDirectoryEntryContext", (html, options) => {
     callback: async function(li) {
       const actor = game.actors.get(li.data("entityId"))
       if(actor) { 
-        await actor.setFlag("core", "sheetClass", "PF1.LootSheetPf1NPC");
+        await actor.setFlag("core", "sheetClass", "FFD20.LootSheetFfd20NPC");
         let permissions = duplicate(actor.data.permission)
         game.users.forEach((u) => {
           if (!u.isGM) { permissions[u.id] = 2 }
@@ -1265,7 +1265,7 @@ Hooks.on("getActorDirectoryEntryContext", (html, options) => {
     },
     condition: li => {
       const actor = game.actors.get(li.data("entityId"))
-      return game.user.isGM && actor && actor.data.type === "npc" && !(actor.sheet instanceof LootSheetPf1NPC) && actor.data.token.actorLink;
+      return game.user.isGM && actor && actor.data.type === "npc" && !(actor.sheet instanceof LootSheetFfd20NPC) && actor.data.token.actorLink;
     },
   });
   // Special case: actor is not linked => convert all defeated tokens!
@@ -1281,8 +1281,8 @@ Hooks.on("getActorDirectoryEntryContext", (html, options) => {
           // to be considered dead, a token must have the "dead" overlay effect (either from combat tracker or directly)
           if( effects && effects.filter( e => [CONFIG.Combat.defeatedStatusId, "combat-utility-belt.dead"].indexOf(getProperty(e, "flags.core.statusId")) >= 0 ).length > 0) {
             let actor = canvas.tokens.get(t._id).actor
-            if( !(actor.sheet instanceof LootSheetPf1NPC) ) {
-              await actor.setFlag("core", "sheetClass", "PF1.LootSheetPf1NPC");
+            if( !(actor.sheet instanceof LootSheetFfd20NPC) ) {
+              await actor.setFlag("core", "sheetClass", "FFD20.LootSheetFfd20NPC");
               let permissions = duplicate(actor.data.permission)
               game.users.forEach((u) => {
                 if (!u.isGM) { permissions[u.id] = 2 }
@@ -1295,7 +1295,7 @@ Hooks.on("getActorDirectoryEntryContext", (html, options) => {
     },
     condition: li => {
       const actor = game.actors.get(li.data("entityId"))
-      return game.user.isGM && actor && actor.data.type === "npc" && !(actor.sheet instanceof LootSheetPf1NPC) && !actor.data.token.actorLink;
+      return game.user.isGM && actor && actor.data.type === "npc" && !(actor.sheet instanceof LootSheetFfd20NPC) && !actor.data.token.actorLink;
     },
   });
 });

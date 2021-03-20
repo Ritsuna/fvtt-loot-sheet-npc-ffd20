@@ -8,16 +8,16 @@ export class LootSheetActions {
    * Displays a message into the chat log
    */
   static chatMessage(speaker, owner, message, item) {
-    if (game.settings.get("lootsheetnpcpf1", "buyChat")) {
+    if (game.settings.get("lootsheetnpcffd20", "buyChat")) {
       if (item) {
-        message = `<div class="pf1 chat-card item-card" data-actor-id="${owner._id}" data-item-id="${item._id}">
+        message = `<div class="ffd20 chat-card item-card" data-actor-id="${owner._id}" data-item-id="${item._id}">
                     <header class="card-header flexrow">
                         <img src="${item.img}" title="${item.showName}" width="36" height="36">
                         <h3 class="item-name">${item.showName}</h3>
                     </header>
                     <div class="card-content"><p>${message}</p></div></div>`;
       } else {
-        message = `<div class="pf1 chat-card item-card" data-actor-id="${owner._id}">
+        message = `<div class="ffd20 chat-card item-card" data-actor-id="${owner._id}">
                     <div class="card-content"><p>${message}</p></div></div>`;
       }
       ChatMessage.create({
@@ -35,7 +35,7 @@ export class LootSheetActions {
    * Sends a error message to the target user
    */
   static errorMessageToActor(target, message) {
-    game.socket.emit("module.lootsheetnpcpf1", {
+    game.socket.emit("module.lootsheetnpcffd20", {
       type: "error",
       targetId: target.id,
       message: message
@@ -67,18 +67,18 @@ export class LootSheetActions {
     let newItem = duplicate(item);
     
     // remove unecessary flags
-    if(newItem.flags.lootsheetnpcpf1) {
-      delete(newItem.flags.lootsheetnpcpf1)
+    if(newItem.flags.lootsheetnpcffd20) {
+      delete(newItem.flags.lootsheetnpcffd20)
     }
 
     // decrease the quantity (unless infinite)
-    if(!item.flags.lootsheetnpcpf1 || !item.flags.lootsheetnpcpf1.infinite) {
+    if(!item.flags.lootsheetnpcffd20 || !item.flags.lootsheetnpcffd20.infinite) {
       const update = {
         _id: itemId,
         "data.quantity": item.data.quantity - quantity
       };
 
-      let removeEmptyStacks = game.settings.get("lootsheetnpcpf1", "removeEmptyStacks");
+      let removeEmptyStacks = game.settings.get("lootsheetnpcffd20", "removeEmptyStacks");
       if (update["data.quantity"] === 0 && removeEmptyStacks) {
         source.deleteEmbeddedEntity("OwnedItem", itemId);
       } else {
@@ -195,7 +195,7 @@ export class LootSheetActions {
     let messageKey = ""
     let cost = moved.item.showCost;
 
-    if(container.getFlag("lootsheetnpcpf1", "lootsheettype") === "Merchant") {
+    if(container.getFlag("lootsheetnpcffd20", "lootsheettype") === "Merchant") {
       messageKey = "ls.chatSell"
       let sellerFunds = duplicate(giver.data.data.currency)
       if(sellerFunds && moved.item.showCost > 0) {
@@ -230,7 +230,7 @@ export class LootSheetActions {
       quantity = sellItem.data.quantity;
     }
 
-    let sellerModifier = seller.getFlag("lootsheetnpcpf1", "priceModifier");
+    let sellerModifier = seller.getFlag("lootsheetnpcffd20", "priceModifier");
     if (!sellerModifier) sellerModifier = 1.0;
 
     let itemCost = LootSheetActions.getItemCost(sellItem)
