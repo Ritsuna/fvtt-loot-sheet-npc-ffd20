@@ -4,7 +4,7 @@
 
 window.require=function(name) { throw "Dummy require function!!" };
 
-import { ActorSheetFFD20NPC } from "../../systems/FFD20/ffd20.js";
+import { ActorSheetFFD20NPC } from "../../systems/ffd20/ffd20.js";
 import { LootSheetActions } from "./scripts/actions.js";
 
 class QuantityDialog extends Dialog {
@@ -623,14 +623,14 @@ class LootSheetFFd20NPC extends ActorSheetFFD20NPC {
       title: game.i18n.localize("ls.convertLootTitle"),
       content: game.i18n.localize("ls.convertLootMessage"),
       yes: async () => {
-        let totalGP = 0
+        let totalGil = 0
         let deleteList = []
         this.actor.items.forEach( item  => {
-          totalGP += LootSheetActions.getItemSaleValue(item)
+          totalGil += LootSheetActions.getItemSaleValue(item)
           deleteList.push(item._id)
         });
 
-        let funds = LootSheetActions.spreadFunds(totalGP, duplicate(this.actor.data.data.currency));
+        let funds = LootSheetActions.spreadFunds(totalGil, duplicate(this.actor.data.data.currency));
 
         await this.actor.update({ "data.currency": funds });
         await this.actor.deleteEmbeddedEntity("OwnedItem", deleteList)

@@ -98,15 +98,9 @@ export class LootSheetActions {
 
   }
 
-  static spreadFunds(totalGP, funds) {
-    const gpBare = Math.floor(totalGP),
-      spLeftOver = (totalGP - gpBare) * 10,
-      spBare = Math.floor(spLeftOver),
-      cpLeftOver = (spLeftOver - spBare) * 10,
-      cpBare = Math.floor(cpLeftOver);
-    funds.gp += gpBare;
-    funds.sp += spBare;
-    funds.cp += cpBare;
+  static spreadFunds(totalGil, funds) {
+    const gilBare = Math.floor(totalGil)
+    funds.gil += gilBare
     return funds;
   }
 
@@ -202,8 +196,8 @@ export class LootSheetActions {
         if( moved.item.data.subType !== "tradeGoods" )
           cost = cost / 2;
 
-        const totalGP = cost * moved.quantity;
-        sellerFunds = LootSheetActions.spreadFunds(totalGP, sellerFunds);
+        const totalGil = cost * moved.quantity;
+        sellerFunds = LootSheetActions.spreadFunds(totalGil, sellerFunds);
         await giver.update({ "data.currency": sellerFunds });
       }
     } else {
@@ -239,10 +233,7 @@ export class LootSheetActions {
     let buyerFunds = duplicate(buyer.data.data.currency);
     let buyerFundsAlt = duplicate(buyer.data.data.altCurrency);
     const conversionRate = {
-      "pp": 10,
-      "gp": 1,
-      "sp": 0.1,
-      "cp": 0.01
+      "gil": 1,
     };
     let buyerFundsAsGold = 0;
     let buyerFundsAsGoldAlt = 0;

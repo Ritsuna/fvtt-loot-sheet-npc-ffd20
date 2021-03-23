@@ -31,7 +31,7 @@
   "ERROR.lsInvalidMove": "The actor {actor} tried to sell or drop an item from an unlinked token!",
     
   "ls.quantity": "Quantity",
-  "ls.price": "Price (in gp)",
+  "ls.price": "Price (in gil)",
   "ls.accept": "Accept",
   "ls.cancel": "Cancel",
   "ls.update": "Update",
@@ -49,8 +49,8 @@
   
   "ls.chatLoot": "{buyer} looted {quantity} x {name}.",
   "ls.chatLootCoins": "{buyer} looted {quantity} {currency}.",
-  "ls.chatPurchase": "{buyer} purchased {quantity} x {name} for {cost} gp.",
-  "ls.chatSell": "{seller} sold {quantity} x {item} for {price} gp. to {container}",
+  "ls.chatPurchase": "{buyer} purchased {quantity} x {name} for {cost} gil.",
+  "ls.chatSell": "{seller} sold {quantity} x {item} for {price} gil. to {container}",
   "ls.chatDrop": "{seller} dropped {quantity} x {item} into {container}",
   "ls.chatGive": "{quantity} x {item} given/moved from {giver} to {receiver}.",
   
@@ -109,15 +109,9 @@
   "ls.maxLoad": "Max load",
   "ls.maxLoadTooltip": "Max weight that can be put in the loot (empty or 0 means unlimited)",
   
-  "ls.pp": "pp",
-  "ls.gp": "gp",
-  "ls.sp": "sp",
-  "ls.cp": "cp",
+  "ls.gil": "gil",
   
-  "ls.wl_pp": "pp (weightless)",
-  "ls.wl_gp": "gp (weightless)",
-  "ls.wl_sp": "sp (weightless)",
-  "ls.wl_cp": "cp (weightless)",
+  "ls.wl_gil": "gil (weightless)",
   
   "ls.totalItems": "Items (count)",
   "ls.totalPrice": "Total value",
