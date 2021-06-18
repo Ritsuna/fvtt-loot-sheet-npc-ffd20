@@ -47,13 +47,14 @@ export class LootSheetActions {
    */
   static moveItem(source, destination, itemId, quantity) {
     //console.log("Loot Sheet | moveItem")
-    let item = source.getEmbeddedEntity("OwnedItem", itemId);
+    let item = source.getEmbeddedDocument("Item", itemId);
     
     if(!item) {
       ui.notifications.warn(game.i18n.format("ERROR.lsInvalidMove", { actor: source.name }));
       console.log(source, destination, itemId)
       return null;
     }
+    item = item.data // migration to 0.8.x
     
     if(!quantity) {
       quantity = item.data.quantity
@@ -80,14 +81,14 @@ export class LootSheetActions {
 
       let removeEmptyStacks = game.settings.get("lootsheetnpcffd20", "removeEmptyStacks");
       if (update["data.quantity"] === 0 && removeEmptyStacks) {
-        source.deleteEmbeddedEntity("OwnedItem", itemId);
+        source.deleteEmbeddedDocuments("Item", [itemId]);
       } else {
-        source.updateEmbeddedEntity("OwnedItem", update);
+        source.updateEmbeddedDocuments("Item", [update]);
       }
     }
 
     newItem.data.quantity = quantity;
-    destination.createEmbeddedEntity("OwnedItem", newItem);
+    destination.createEmbeddedDocuments("Item", [newItem]);
     newItem.showName = LootSheetActions.getItemName(newItem)
     newItem.showCost = LootSheetActions.getItemCost(newItem)
     
@@ -98,9 +99,15 @@ export class LootSheetActions {
 
   }
 
-  static spreadFunds(totalGil, funds) {
-    const gilBare = Math.floor(totalGil)
-    funds.gil += gilBare
+  static spreadFunds(totalGP, funds) {
+    const gpBare = Math.floor(totalGP),
+      spLeftOver = (totalGP - gpBare) * 10,
+      spBare = Math.floor(spLeftOver),
+      cpLeftOver = (spLeftOver - spBare) * 10,
+      cpBare = Math.floor(cpLeftOver);
+    funds.gp += gpBare;
+    funds.sp += spBare;
+    funds.cp += cpBare;
     return funds;
   }
 
@@ -196,8 +203,8 @@ export class LootSheetActions {
         if( moved.item.data.subType !== "tradeGoods" )
           cost = cost / 2;
 
-        const totalGil = cost * moved.quantity;
-        sellerFunds = LootSheetActions.spreadFunds(totalGil, sellerFunds);
+        const totalGP = cost * moved.quantity;
+        sellerFunds = LootSheetActions.spreadFunds(totalGP, sellerFunds);
         await giver.update({ "data.currency": sellerFunds });
       }
     } else {
@@ -216,7 +223,7 @@ export class LootSheetActions {
   static async transaction(speaker, seller, buyer, itemId, quantity) {
     console.log("Loot Sheet | Transaction")
 
-    let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
+    let sellItem = seller.getEmbeddedDocument("Item", itemId);
 
 
     // If the buyer attempts to buy more then what's in stock, buy all the stock.
@@ -227,13 +234,16 @@ export class LootSheetActions {
     let sellerModifier = seller.getFlag("lootsheetnpcffd20", "priceModifier");
     if (!sellerModifier) sellerModifier = 1.0;
 
-    let itemCost = LootSheetActions.getItemCost(sellItem)
+    let itemCost = LootSheetActions.getItemCost(sellItem.data)
     itemCost = itemCost * sellerModifier;
     itemCost *= quantity;
     let buyerFunds = duplicate(buyer.data.data.currency);
     let buyerFundsAlt = duplicate(buyer.data.data.altCurrency);
     const conversionRate = {
-      "gil": 1,
+      "pp": 10,
+      "gp": 1,
+      "sp": 0.1,
+      "cp": 0.01
     };
     let buyerFundsAsGold = 0;
     let buyerFundsAsGoldAlt = 0;
@@ -255,6 +265,7 @@ export class LootSheetActions {
     
     // make sure that coins is a number (not a float)
     while(!Number.isInteger(itemCost)) {
+
       itemCost *= 10;
       for (const key in conversionRate) {
         conversionRate[key] *= 10

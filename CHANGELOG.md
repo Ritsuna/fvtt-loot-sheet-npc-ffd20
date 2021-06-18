@@ -4,9 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2021-06-05
+### Changed
+- Support for 0.8.x
+
+## [2.0.0] - 2021-04-05
+### Changed
+- Refactoring based on new importing strategy (https://gitlab.com/Furyspark/foundryvtt-pathfinder1/-/wikis/API/Importing)
+
 ## [1.9.1] - 2021-02-13
 ### Fixed
-- Fix reference to pf1 system (don't forget to update system!)
+- Fix reference to FFD20 system (don't forget to update system!)
 
 ## [1.9.0] - 2021-02-08
 ### Added
@@ -33,14 +41,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.7.0] - 2020-11-15
 ### Changed
-- Look-and-feel adapted based on latest PF1 system
+- Look-and-feel adapted based on latest FFD20 system
 ### Added
 - New actions: identified, add/remove
 - New column: weight
 
 ## [1.6.1] - 2020-10-09
 ### Fixed
-- Fix for PF1 system 0.7.4+
+- Fix for FFD20 system 0.7.4+
 
 ## [1.6.0] - 2020-08-01
 ### Added
