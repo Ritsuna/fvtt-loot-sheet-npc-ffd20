@@ -15,9 +15,9 @@
     }
   ],
   "socket": true,
-  "url": "https://github.com/SvenWerlen/fvtt-loot-sheet-npc-pf1",
-  "download": "https://github.com/SvenWerlen/fvtt-loot-sheet-npc-pf1/archive/v-2.1.2.zip",
-  "manifest": "https://raw.githubusercontent.com/SvenWerlen/fvtt-loot-sheet-npc-pf1/master/module.json",
+  "url": "https://github.com/Ritsuna/fvtt-loot-sheet-npc-ffd20",
+  "download": "https://github.com/Ritsuna/fvtt-loot-sheet-npc-ffd20/archive/refs/tags/2.1.2.zip",
+  "manifest": "https://raw.githubusercontent.com/Ritsuna/fvtt-loot-sheet-npc-ffd20/master/module.json",
   "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.6"
+  "compatibleCoreVersion": "0.8.9"
 }
