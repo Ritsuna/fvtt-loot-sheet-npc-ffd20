@@ -6,6 +6,8 @@ import { QuantityDialog } from "./quantity-dialog.js";
 
 export class LootSheetFFD20NPC extends game.ffd20.applications.ActorSheetFFD20NPC {
 
+  static DEFAULT_TOKEN = "icons/svg/mystery-man.svg"
+  
   get template() {
     // adding the #equals and #unequals handlebars helper
     Handlebars.registerHelper('equals', function(arg1, arg2, options) {
@@ -297,36 +299,35 @@ export class LootSheetFFD20NPC extends game.ffd20.applications.ActorSheetFFD20NP
     //return;
     let shopQtyRoll = new Roll(shopQtyFormula);
 
-    shopQtyRoll.roll();
+    await shopQtyRoll.roll({ async: false });
     console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
 
     for (let i = 0; i < shopQtyRoll.result; i++) {
-      const rollResult = rolltable.roll();
-      let newItem = game.items.get(rollResult.results[0].resultId);
-      //console.log(newItem);
+      const rollResult = await rolltable.roll({ async: false });
+      console.log(rollResult)
+      let newItem = game.items.get(rollResult.results[0].data.resultId);
       if (!newItem || newItem === null) {
-          
+        // search in compendium
         for (const pack of game.packs) {
-          if (pack.entity == "Item") {
-            console.log(rollResult.results[0].resultId)
-            newItem = await pack.getEntity(rollResult.results[0].resultId);
+          if (pack.documentClass.documentName == "Item") {
+            newItem = await pack.getDocument(rollResult.results[0].data.resultId);
             if (newItem) {
               break;
             }
           }
         }
         if (!newItem || newItem === null) {
-          console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
-          return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
+          console.log(`Loot Sheet | No item found "${rollResult.results[0].data.resultId}".`);
+          return ui.notifications.error(`No item found "${rollResult.results[0].data.resultId}".`);
         }
       }
 
       let itemQtyRoll = new Roll(itemQtyFormula);
-      itemQtyRoll.roll();
+      await itemQtyRoll.roll({ async: false });
       console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
-      newItem.data.data.quantity = Number(itemQtyRoll.result);
-
-      await this.actor.createEmbeddedDocuments("Item", newItem);
+      const newData = newItem.data.toJSON()
+      newData.data.quantity = Number(itemQtyRoll.result);
+      await this.actor.createEmbeddedDocuments("Item", [newData]);
     }
   }
 
@@ -347,7 +348,7 @@ export class LootSheetFFD20NPC extends game.ffd20.applications.ActorSheetFFD20NP
       var x = arrayItem._id;
       //console.log(arrayItem);
       i++;
-      pack.getEntity(arrayItem._id).then(packItem => {
+      pack.getDocument(arrayItem._id).then(packItem => {
 
         if (packItem.type === type) {
 
@@ -799,7 +800,7 @@ export class LootSheetFFD20NPC extends game.ffd20.applications.ActorSheetFFD20NP
     
     // Iterate through items, allocating to containers
     for (let i of actorData.items) {
-      i.img = i.img || DEFAULT_TOKEN;
+      i.img = i.img || LootSheetFFD20NPC.DEFAULT_TOKEN;
       i.showPrice = this.getLootPrice(i)
       i.showName = this.getLootName(i)
       

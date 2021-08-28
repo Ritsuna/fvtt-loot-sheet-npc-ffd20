@@ -109,9 +109,15 @@
   "ls.maxLoad": "Max load",
   "ls.maxLoadTooltip": "Max weight that can be put in the loot (empty or 0 means unlimited)",
   
-  "ls.gil": "gil",
+  "ls.pgil": "P Gil",
+  "ls.pil": "Gil",
+  "ls.sgil": "S Gil",
+  "ls.cgil": "C Gil",
   
-  "ls.wl_gil": "gil (weightless)",
+  "ls.wl_pgil": "P Gil (weightless)",
+  "ls.wl_pil": "Gil (weightless)",
+  "ls.wl_sgil": "S Gil (weightless)",
+  "ls.wl_cgil": "C Gil (weightless)",
   
   "ls.totalItems": "Items (count)",
   "ls.totalPrice": "Total value",

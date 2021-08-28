@@ -2,7 +2,7 @@
   "name": "lootsheetnpcffd20",
   "title": "Loot Sheet NPC Final Fantasy d20",
   "description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers.",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": "Sven Werlen (originally from Jan Ole Peek (ChalkOne) and Charles Miller (Kage)), Adapted by Ritsu Voices for FFD20",
   "systems": ["ffd20"],
   "esmodules": ["/lootsheetnpcffd20.js"],
@@ -15,9 +15,9 @@
     }
   ],
   "socket": true,
-  "url": "https://github.com/Ritsuna/fvtt-loot-sheet-npc-ffd20",
-  "download": "https://github.com/Ritsuna/fvtt-loot-sheet-npc-ffd20/archive/refs/tags/2.1.1.zip",
-  "manifest": "https://raw.githubusercontent.com/Ritsuna/fvtt-loot-sheet-npc-ffd20/master/module.json",
+  "url": "https://github.com/SvenWerlen/fvtt-loot-sheet-npc-pf1",
+  "download": "https://github.com/SvenWerlen/fvtt-loot-sheet-npc-pf1/archive/v-2.1.2.zip",
+  "manifest": "https://raw.githubusercontent.com/SvenWerlen/fvtt-loot-sheet-npc-pf1/master/module.json",
   "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.7"
+  "compatibleCoreVersion": "0.8.6"
 }
