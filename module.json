@@ -19,5 +19,5 @@
   "download": "https://github.com/Ritsuna/fvtt-loot-sheet-npc-ffd20/archive/v-2.2.0.zip",
   "manifest": "https://raw.githubusercontent.com/Ritsuna/fvtt-loot-sheet-npc-ffd20/master/module.json",
   "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.6"
+  "compatibleCoreVersion": "0.8.9"
 }
