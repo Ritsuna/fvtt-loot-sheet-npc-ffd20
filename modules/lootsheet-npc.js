@@ -134,7 +134,7 @@ export class LootSheetFFD20NPC extends game.ffd20.applications.ActorSheetFFD20NP
     sheetData.weightWarning = maxLoad <= 0 || maxLoad >= totalWeight ? "" : "warn"
     sheetData.totalPrice = totalPrice
     sheetData.weightUnit = game.settings.get("ffd20", "units") == "metric" ? game.i18n.localize("FFD20.Kgs") : game.i18n.localize("FFD20.Lbs")
-
+        
     // workaround to get all flags
     const rolltableName = await this.actor.getFlag(LootSheetConstants.MODULENAME, "rolltable");
     const shopQtyFormula = await this.actor.getFlag(LootSheetConstants.MODULENAME, "shopQty") || "1";
@@ -588,14 +588,14 @@ export class LootSheetFFD20NPC extends game.ffd20.applications.ActorSheetFFD20NP
       title: game.i18n.localize("ls.convertLootTitle"),
       content: game.i18n.localize("ls.convertLootMessage"),
       yes: async () => {
-        let totalGP = 0
+        let totalGIL = 0
         let deleteList = []
         this.actor.items.forEach( item  => {
-          totalGP += LootSheetActions.getItemSaleValue(item)
+          totalGIL += LootSheetActions.getItemSaleValue(item)
           deleteList.push(item.id)
         });
 
-        let funds = LootSheetActions.spreadFunds(totalGP, duplicate(this.actor.data.data.currency));
+        let funds = LootSheetActions.spreadFunds(totalGIL, duplicate(this.actor.data.data.currency));
 
         await this.actor.update({ "data.currency": funds });
         await this.actor.deleteEmbeddedDocuments("Item", deleteList)
